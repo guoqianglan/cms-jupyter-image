@@ -32,7 +32,7 @@ RUN apt-get update && \
     curl && \
     rm -rf /var/lib/apt/lists/*
 
-#RUN echo "America/New_York" > /etc/timezone
+## RUN echo "America/New_York" > /etc/timezone
 
 # grant NO_USER sudo permission
 USER root
