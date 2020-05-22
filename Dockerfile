@@ -29,7 +29,7 @@ USER root
 # install curl
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-	curl
+    curl && \
     rm -rf /var/lib/apt/lists/*
 
 #RUN echo "America/New_York" > /etc/timezone
