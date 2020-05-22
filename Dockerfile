@@ -25,12 +25,16 @@ RUN jupyter labextension install @ryantam626/jupyterlab_code_formatter && \
 
 
 USER root
-RUN apt-get install curl && \
+
+# install curl
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+	curl
     rm -rf /var/lib/apt/lists/*
 
 #RUN echo "America/New_York" > /etc/timezone
 
 # grant NO_USER sudo permission
 USER root
-RUN echo “$NB_USER ALL=(ALL) NOPASSWD:ALL” > /etc/sudoers.d/notebook
+RUN echo "$NB_USER ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/notebook
 USER $NB_USER
