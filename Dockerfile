@@ -1,4 +1,4 @@
-FROM jupyter/scipy-notebook:latest
+FROM jupyter/scipy-notebook:c76996e26e48
 # Get the latest image tag at:
 # https://hub.docker.com/r/jupyter/minimal-notebook/tags/
 # Inspect the Dockerfile at:
@@ -7,34 +7,37 @@ FROM jupyter/scipy-notebook:latest
 # install material science related
 RUN pip install atomate 'apache-airflow[ssh]' --no-cache-dir
 
-# install dash plotly
-RUN pip install dash jupyterlab-dash==0.1.0a3 --no-cache-dir && \
-    jupyter labextension install @j123npm/jupyterlab-dash@0.1.0-alpha.4
-
-
-# install some jupyter labexternsions
-RUN jupyter labextension install jupyterlab-plotly
+# install some jupyter server proxy
 RUN pip install jupyter-server-proxy --no-cache-dir && \
-    jupyter serverextension enable --sys-prefix jupyter_server_proxy
-RUN jupyter labextension install @jupyterlab/server-proxy
+    jupyter labextension install @jupyterlab/server-proxy --no-build
 
-# jupyterlad code formatter
-RUN jupyter labextension install @ryantam626/jupyterlab_code_formatter && \
-    pip install jupyterlab_code_formatter autopep8 && \
+# install dash plotly
+RUN pip install dash jupyter-dash --no-cache-dir && \
+    jupyter labextension install jupyterlab-plotly --no-build
+
+
+# jupyterlab code formatter
+RUN jupyter labextension install @ryantam626/jupyterlab_code_formatter --no-build && \
+    pip install jupyterlab_code_formatter --no-cache-dir && \  
     jupyter serverextension enable --py jupyterlab_code_formatter
+RUN pip install black autopep8 --no-cache-dir
 
+# build and clean up
+RUN jupyter lab build -y && \
+    jupyter lab clean -y && \
+    npm cache clean --force && \
+    rm -rf /home/$NB_USER/.cache/yarn && \
+    rm -rf /home/$NB_USER/.node-gyp && \
+    fix-permissions $CONDA_DIR && \
+    fix-permissions /home/$NB_USER
 
 USER root
 
 # install curl
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    curl && \
+    apt-get install -y --no-install-recommends curl && \
     rm -rf /var/lib/apt/lists/*
 
-## RUN echo "America/New_York" > /etc/timezone
-
 # grant NO_USER sudo permission
-USER root
 RUN echo "$NB_USER ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/notebook
 USER $NB_USER
