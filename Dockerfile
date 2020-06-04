@@ -43,7 +43,8 @@ USER root
 # install some linux package
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    gfortran3 \
+    gfortran \
+	libgfortran3 \
     gcc \
 	curl && \
     rm -rf /var/lib/apt/lists/*
