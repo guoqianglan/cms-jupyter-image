@@ -40,11 +40,11 @@ RUN jupyter lab build -y && \
 
 USER root
 
-# install curl
+# install some linux package
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     gfortran3 \
-    gcc && \
+    gcc \
 	curl && \
     rm -rf /var/lib/apt/lists/*
 
