@@ -5,8 +5,11 @@ FROM jupyter/scipy-notebook:c76996e26e48
 # https://github.com/jupyter/docker-stacks/tree/master/minimal-notebook/Dockerfile
 
 # install material science related
-RUN pip install atomate 'apache-airflow[ssh]' --no-cache-dir
+RUN pip install atomate icet --no-cache-dir
 RUN conda install --quiet --yes --channel matsci enumlib
+
+# install airflow 
+RUN pip install 'apache-airflow[ssh]' --no-cache-dir
 
 # install some jupyter server proxy
 RUN pip install jupyter-server-proxy --no-cache-dir && \
