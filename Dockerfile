@@ -1,12 +1,21 @@
-FROM jupyter/scipy-notebook:c76996e26e48
+FROM jupyter/scipy-notebook:04f7f60d34a6
 # Get the latest image tag at:
 # https://hub.docker.com/r/jupyter/minimal-notebook/tags/
 # Inspect the Dockerfile at:
 # https://github.com/jupyter/docker-stacks/tree/master/minimal-notebook/Dockerfile
 
 # install material science related
-RUN pip install atomate icet --no-cache-dir
+RUN pip install atomate icet megnet pulp --no-cache-dir
 RUN conda install --quiet --yes --channel matsci enumlib
+RUN conda install --quiet --yes pythreejs
+
+# install tensorflow
+RUN pip install tensorflow --no-cache-dir
+
+# install dgl related
+RUN conda install pytorch torchvision -c pytorch --quiet --yes 
+RUN pip install dgl --no-cache-dir
+
 
 # install airflow 
 RUN pip install 'apache-airflow[ssh]' --no-cache-dir
