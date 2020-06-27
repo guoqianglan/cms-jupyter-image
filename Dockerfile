@@ -1,4 +1,4 @@
-FROM jupyter/scipy-notebook:04f7f60d34a6
+FROM jupyter/scipy-notebook:ubuntu-18.04
 # Get the latest image tag at:
 # https://hub.docker.com/r/jupyter/minimal-notebook/tags/
 # Inspect the Dockerfile at:
@@ -32,7 +32,7 @@ RUN pip install dash jupyter-dash --no-cache-dir && \
 RUN jupyter labextension install @ryantam626/jupyterlab_code_formatter --no-build && \
     pip install jupyterlab_code_formatter --no-cache-dir && \  
     jupyter serverextension enable --py jupyterlab_code_formatter
-RUN pip install black autopep8 --no-cache-dir
+RUN pip install black autopep8 isort --no-cache-dir
 
 # jupyter lab toc
 RUN jupyter labextension install @jupyterlab/toc --no-build
@@ -53,8 +53,8 @@ USER root
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     gfortran \
+    gcc \	
 	libgfortran3 \
-    gcc \
 	curl && \
     rm -rf /var/lib/apt/lists/*
 
