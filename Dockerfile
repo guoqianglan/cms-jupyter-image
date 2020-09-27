@@ -4,21 +4,24 @@ FROM jupyter/scipy-notebook:ubuntu-18.04
 # Inspect the Dockerfile at:
 # https://github.com/jupyter/docker-stacks/tree/master/minimal-notebook/Dockerfile
 
+# install airflow 
+RUN pip install 'apache-airflow[ssh]' --no-cache-dir
+
 # install material science related
-RUN pip install atomate icet megnet pulp --no-cache-dir
+RUN pip install atomate icet megnet pulp phonopy --no-cache-dir
 RUN conda install --quiet --yes --channel matsci enumlib
 RUN conda install --quiet --yes pythreejs
 
 # install tensorflow
-RUN pip install tensorflow --no-cache-dir
+#RUN pip install tensorflow --no-cache-dir
 
 # install dgl related
 RUN conda install pytorch torchvision -c pytorch --quiet --yes 
 RUN pip install dgl --no-cache-dir
 
-
-# install airflow 
-RUN pip install 'apache-airflow[ssh]' --no-cache-dir
+# install computer vision related
+RUN conda install -c conda-forge opencv --quiet --yes
+RUN pip install imutils --no-cache-dir
 
 # install some jupyter server proxy
 RUN pip install jupyter-server-proxy --no-cache-dir && \
@@ -47,6 +50,8 @@ RUN jupyter lab build -y && \
     fix-permissions $CONDA_DIR && \
     fix-permissions /home/$NB_USER
 
+
+
 USER root
 
 # install some linux package
@@ -62,3 +67,8 @@ RUN apt-get update && \
 # grant NO_USER sudo permission
 RUN echo "$NB_USER ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/notebook
 USER $NB_USER
+
+# install poetry for package management
+RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+
+ENV PATH=$PATH:$HOME/.poetry/bin
