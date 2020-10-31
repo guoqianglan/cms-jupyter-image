@@ -11,9 +11,11 @@ RUN pip install 'apache-airflow[ssh]' --no-cache-dir
 RUN pip install atomate icet megnet pulp phonopy --no-cache-dir
 RUN conda install --quiet --yes --channel matsci enumlib
 RUN conda install --quiet --yes pythreejs
+RUN conda install --quiet --yes -c conda-forge phono3py
 
 # install tensorflow
 #RUN pip install tensorflow --no-cache-dir
+#RUN pip install tensorflow==1.14 keras imageai --no-cache-dir
 
 # install dgl related
 RUN conda install pytorch torchvision -c pytorch --quiet --yes 
@@ -40,6 +42,9 @@ RUN pip install black autopep8 isort --no-cache-dir
 # jupyter lab toc
 RUN jupyter labextension install @jupyterlab/toc --no-build
 
+# pipreqs
+RUN pip install pipreqs --no-cache-dir
+
 # build and clean up
 RUN jupyter lab build -y && \
     jupyter lab clean -y && \
@@ -62,6 +67,9 @@ RUN apt-get update && \
 	libgfortran3 \
 	curl && \
     rm -rf /var/lib/apt/lists/*
+RUN apt update && \
+    apt install -y --no-install-recommends openssh-server && \
+	rm -rf /var/lib/apt/lists/*
 
 
 # grant NO_USER sudo permission
@@ -70,5 +78,4 @@ USER $NB_USER
 
 # install poetry for package management
 RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
-
 ENV PATH=$PATH:$HOME/.poetry/bin
