@@ -4,6 +4,10 @@ FROM jupyter/scipy-notebook:ubuntu-18.04
 # Inspect the Dockerfile at:
 # https://github.com/jupyter/docker-stacks/tree/master/minimal-notebook/Dockerfile
 
+# install dgl related
+RUN conda install pytorch torchvision -c pytorch --quiet --yes 
+RUN pip install dgl tensorboardx --no-cache-dir
+
 # install airflow 
 RUN pip install 'apache-airflow[ssh]' --no-cache-dir
 
@@ -17,13 +21,14 @@ RUN conda install --quiet --yes -c conda-forge phono3py
 #RUN pip install tensorflow --no-cache-dir
 #RUN pip install tensorflow==1.14 keras imageai --no-cache-dir
 
-# install dgl related
-RUN conda install pytorch torchvision -c pytorch --quiet --yes 
-RUN pip install dgl --no-cache-dir
+
 
 # install computer vision related
 RUN conda install -c conda-forge opencv --quiet --yes
 RUN pip install imutils --no-cache-dir
+
+# install 3d cloud related
+RUN conda install open3d=0.6.0.0 -c open3d-admin --quiet --yes
 
 # install some jupyter server proxy
 RUN pip install jupyter-server-proxy --no-cache-dir && \
@@ -38,6 +43,9 @@ RUN jupyter labextension install @ryantam626/jupyterlab_code_formatter --no-buil
     pip install jupyterlab_code_formatter --no-cache-dir && \  
     jupyter serverextension enable --py jupyterlab_code_formatter
 RUN pip install black autopep8 isort --no-cache-dir
+
+# install tools for package management
+RUN pip install pyscaffold[all] --no-cache-dir
 
 # jupyter lab toc
 RUN jupyter labextension install @jupyterlab/toc --no-build
@@ -76,6 +84,6 @@ RUN apt update && \
 RUN echo "$NB_USER ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/notebook
 USER $NB_USER
 
-# install poetry for package management
-RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
-ENV PATH=$PATH:$HOME/.poetry/bin
+# install tools for package management
+#RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+#ENV PATH=$PATH:$HOME/.poetry/bin
