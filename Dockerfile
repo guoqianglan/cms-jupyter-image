@@ -5,6 +5,7 @@ FROM jupyter/scipy-notebook:ubuntu-18.04
 # https://github.com/jupyter/docker-stacks/tree/master/minimal-notebook/Dockerfile
 
 # install dgl related
+RUN conda update --all --quiet --yes 
 RUN conda install pytorch torchvision -c pytorch --quiet --yes 
 RUN pip install dgl tensorboardx --no-cache-dir
 
@@ -15,7 +16,7 @@ RUN pip install 'apache-airflow[ssh]' --no-cache-dir
 RUN pip install atomate icet megnet pulp phonopy --no-cache-dir
 RUN conda install --quiet --yes --channel matsci enumlib
 RUN conda install --quiet --yes pythreejs
-RUN conda install --quiet --yes -c conda-forge phono3py
+#RUN conda install --quiet --yes -c conda-forge phono3py
 
 # install tensorflow
 #RUN pip install tensorflow --no-cache-dir
