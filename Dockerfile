@@ -6,7 +6,7 @@ FROM jupyter/scipy-notebook:ubuntu-18.04
 
 # install dgl related
 RUN conda update -n base conda --quiet --yes
-RUN conda update pytorch torchvision -c pytorch --quiet --yes 
+RUN conda install pytorch torchvision -c pytorch --quiet --yes 
 RUN pip install dgl tensorboardx --no-cache-dir
 
 # install airflow 
