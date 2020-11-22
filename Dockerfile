@@ -6,8 +6,7 @@ FROM jupyter/scipy-notebook:ubuntu-18.04
 
 # install dgl related
 RUN conda update conda --quiet --yes
-RUN conda update conda-build --quiet --yes
-#RUN conda update --all --quiet --yes 
+RUN conda update --all --quiet --yes 
 RUN conda install pytorch torchvision -c pytorch --quiet --yes 
 RUN pip install dgl tensorboardx --no-cache-dir
 
