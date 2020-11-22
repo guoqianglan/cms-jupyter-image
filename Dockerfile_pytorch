@@ -26,6 +26,7 @@ RUN pip install dgl tensorboardx --no-cache-dir
 
 # install computer vision related
 #RUN conda install -c conda-forge opencv --quiet --yes
+RUN pip install opencv-python --no-cache-dir
 RUN pip install imutils --no-cache-dir
 
 # install 3d cloud related

@@ -5,7 +5,9 @@ FROM jupyter/scipy-notebook:ubuntu-18.04
 # https://github.com/jupyter/docker-stacks/tree/master/minimal-notebook/Dockerfile
 
 # install dgl related
-RUN conda update -n base conda --quiet --yes
+#RUN conda update -n base conda --quiet --yes
+RUN conda update conda --quiet --yes
+RUN conda update --all --quiet --yes
 RUN conda install pytorch torchvision -c pytorch --quiet --yes 
 RUN pip install dgl tensorboardx --no-cache-dir
 
