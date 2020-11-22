@@ -29,7 +29,8 @@ RUN conda install -c conda-forge opencv --quiet --yes
 RUN pip install imutils --no-cache-dir
 
 # install 3d cloud related
-RUN conda install open3d=0.6.0.0 -c open3d-admin --quiet --yes
+RUN pip install open3d --no-cache-dir
+#RUN conda install open3d=0.6.0.0 -c open3d-admin --quiet --yes
 
 # install some jupyter server proxy
 RUN pip install jupyter-server-proxy --no-cache-dir && \
