@@ -9,7 +9,7 @@ FROM jupyter/minimal-notebook:latest
 #RUN conda update conda --quiet --yes
 #RUN conda update --all --quiet --yes
 #RUN conda install pytorch torchvision -c pytorch --quiet --yes
-RUN conda install pytorch torchvision torchaudio cpuonly -c pytorch
+#RUN conda install pytorch torchvision torchaudio cpuonly -c pytorch
 RUN pip install dgl tensorboardx --no-cache-dir
 
 # install airflow 
