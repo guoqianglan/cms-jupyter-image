@@ -15,8 +15,8 @@ RUN pip install dgl tensorboardx --no-cache-dir
 RUN pip install 'apache-airflow[ssh]' --no-cache-dir
 
 # install material science related
-RUN conda install --quiet --yes phono3py atomate
-RUN pip install icet megnet pulp --no-cache-dir
+RUN conda install --quiet --yes phono3py 
+RUN pip install atomate icet megnet pulp --no-cache-dir
 RUN conda install --quiet --yes --channel matsci enumlib
 RUN conda install --quiet --yes libgfortran
 RUN conda install --quiet --yes lammps
