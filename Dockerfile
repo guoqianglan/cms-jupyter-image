@@ -1,4 +1,4 @@
-FROM jupyter/scipy-notebook:ubuntu-18.04
+FROM jupyter/minimal-notebook:latest
 # Get the latest image tag at:
 # https://hub.docker.com/r/jupyter/minimal-notebook/tags/
 # Inspect the Dockerfile at:
@@ -6,8 +6,8 @@ FROM jupyter/scipy-notebook:ubuntu-18.04
 
 # install dgl related
 #RUN conda update -n base conda --quiet --yes
-RUN conda update conda --quiet --yes
-RUN conda update --all --quiet --yes
+#RUN conda update conda --quiet --yes
+#RUN conda update --all --quiet --yes
 RUN conda install pytorch torchvision -c pytorch --quiet --yes 
 RUN pip install dgl tensorboardx --no-cache-dir
 
@@ -15,10 +15,13 @@ RUN pip install dgl tensorboardx --no-cache-dir
 RUN pip install 'apache-airflow[ssh]' --no-cache-dir
 
 # install material science related
-RUN pip install atomate icet megnet pulp phonopy --no-cache-dir
+RUN conda install --quiet --yes phono3py atomate
+RUN pip install icet megnet pulp --no-cache-dir
 RUN conda install --quiet --yes --channel matsci enumlib
+RUN conda install --quiet --yes libgfortran
+RUN conda install --quiet --yes lammps
 #RUN conda install --quiet --yes pythreejs
-#RUN conda install --quiet --yes -c conda-forge phono3py
+
 
 # install tensorflow
 #RUN pip install tensorflow --no-cache-dir
@@ -27,11 +30,11 @@ RUN conda install --quiet --yes --channel matsci enumlib
 
 
 # install computer vision related
-RUN conda install -c conda-forge opencv --quiet --yes
-RUN pip install imutils --no-cache-dir
+#RUN conda install -c conda-forge opencv --quiet --yes
+#RUN pip install imutils --no-cache-dir
 
 # install 3d cloud related
-RUN conda install open3d=0.6.0.0 -c open3d-admin --quiet --yes
+#RUN conda install open3d=0.6.0.0 -c open3d-admin --quiet --yes
 
 # install some jupyter server proxy
 RUN pip install jupyter-server-proxy --no-cache-dir && \
@@ -73,14 +76,10 @@ USER root
 # install some linux package
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    gfortran \
-    gcc \	
-	libgfortran3 \
-	curl && \
+    #gcc \	
+    openssh-server \
+    curl && \
     rm -rf /var/lib/apt/lists/*
-RUN apt update && \
-    apt install -y --no-install-recommends openssh-server && \
-	rm -rf /var/lib/apt/lists/*
 
 
 # grant NO_USER sudo permission
